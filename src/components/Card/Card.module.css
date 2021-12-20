@@ -1,7 +1,7 @@
 .card {
   border: 1px solid lightgray;
   border-radius: 3px;
-  box-shadow: -1px 1px 5px 0px #E29CC0;
+  box-shadow: -2px 3px 2px -1px rgba(0, 0, 0, 0.27);
   margin-top: 1rem;
   margin-right: 1rem;
   width: 350px;
@@ -9,7 +9,7 @@
 }
 
 .card:hover {
-  box-shadow: -3px 3px 5px 0px #E29CC0;
+  box-shadow: -3px 4px 2px -1px rgba(0, 0, 0, 0.27);
 }
 
 .image_container {
@@ -27,10 +27,10 @@
 
 .link {
   display: inline-block;
-  border: 1px solid blue;
+  border: 1px solid #000;
   border-radius: 4px;
-  background-color: blue;
-  color: white;
+  background-color: #000;
+  color: #fff;
   font-weight: 700;
   padding: 0.5rem 0.75rem;
   text-decoration: none;
@@ -38,8 +38,8 @@
 }
 
 .link:hover {
-  background-color: white;
-  color: blue;
+  background-color: #fff;
+  color: #000;
 }
 
 .link:hover .title {
@@ -49,4 +49,10 @@
 .meta {
   display: flex;
   justify-content: space-between;
+}
+
+@media screen and (max-width: 767px) {
+  .card {
+    width: 100%;
+  }
 }

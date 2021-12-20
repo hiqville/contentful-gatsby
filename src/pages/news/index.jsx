@@ -5,13 +5,13 @@ import HeroCard from '../../components/HeroCard/HeroCard'
 import Container from '../../components/Container/Container'
 import CardList from '../../components/CardList/CardList'
 import Card from '../../components/Card/Card'
+import Separator from '../../components/Separator/Separator'
 
 const News = ({ data, location }) => {
   const page = data.contentfulContentPage
   const heroCard = page.pageHeroCard
   const textContent = page.plainTextContent?.childMarkdownRemark?.html
 
-  // TODO: Rich text handler
   return (
     <Layout location={location}>
       <HeroCard
@@ -26,10 +26,12 @@ const News = ({ data, location }) => {
       />
       <Container>
         {textContent && <div
+              className="md-content"
               dangerouslySetInnerHTML={{
                 __html: textContent,
               }}
         />}
+        <Separator />
         <CardList>
           {page.cards?.map((card) => (
             <li key={card.id}>
