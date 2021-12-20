@@ -1,0 +1,99 @@
+import React from 'react'
+import { graphql } from 'gatsby'
+import Layout from '../../components/Layout/Layout'
+import HeroCard from '../../components/HeroCard/HeroCard'
+import Container from '../../components/Container/Container'
+import CardList from '../../components/CardList/CardList'
+import Card from '../../components/Card/Card'
+
+const News = ({ data, location }) => {
+  const page = data.contentfulContentPage
+  const heroCard = page.pageHeroCard
+  const textContent = page.plainTextContent?.childMarkdownRemark?.html
+
+  // TODO: Rich text handler
+  return (
+    <Layout location={location}>
+      <HeroCard
+        image={heroCard.cardImage.image.gatsbyImageData}
+        header={heroCard.header}
+        content={
+          heroCard.childContentfulContentCardTextTextNode.childMarkdownRemark
+            .html
+        }
+        link={heroCard.cardLink}
+        linkText={heroCard.linkText}
+      />
+      <Container>
+        {textContent && <div
+              dangerouslySetInnerHTML={{
+                __html: textContent,
+              }}
+        />}
+        <CardList>
+          {page.cards?.map((card) => (
+            <li key={card.id}>
+              <Card
+                image={card.cardImage.image.gatsbyImageData}
+                title={card.header}
+                content={card.text.childMarkdownRemark.html}
+                link={card.cardLink}
+                linkText={card.linkText}
+              />
+            </li>
+          ))}
+        </CardList>
+      </Container>
+    </Layout>
+  )
+}
+
+export default News
+
+export const pageQuery = graphql`
+query NewsQuery {
+  contentfulContentPage(contentful_id: {eq: "zuwPjqMgHOU6177TeeHnL"}) {
+    contentful_id
+    title
+    header
+    plainTextContent {
+      childMarkdownRemark {
+        html
+      }
+    }
+    cards {
+      id
+      header
+      text {
+        childMarkdownRemark {
+          html
+        }
+      }
+      cardLink
+      linkText
+      cardImage {
+        alternativeText
+        image {
+          gatsbyImageData
+        }
+      }
+    }
+    pageHeroCard {
+      header
+      cardLink
+      linkText
+      cardImage {
+        alternativeText
+        image {
+          gatsbyImageData
+        }
+      }
+      childContentfulContentCardTextTextNode {
+        childMarkdownRemark {
+          html
+        }
+      }
+    }
+  }
+}
+`

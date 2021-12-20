@@ -1,0 +1,7 @@
+.card_list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 0;
+}

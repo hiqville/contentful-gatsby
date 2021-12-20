@@ -1,0 +1,9 @@
+.card_list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.card_container {
+  max-width: 30rem;
+}

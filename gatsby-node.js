@@ -4,12 +4,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
   // Define a template for blog post
-  const blogPost = path.resolve('./src/templates/blog-post.js')
+  const article = path.resolve('./src/templates/ArticleTemplate.jsx')
+  const person = path.resolve('./src/templates/PersonTemplate.jsx')
 
-  const result = await graphql(
+  const articleResult = await graphql(
     `
       {
-        allContentfulBlogPost {
+        allContentfulArticle {
           nodes {
             title
             slug
@@ -19,35 +20,78 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     `
   )
 
-  if (result.errors) {
+  const personResult = await graphql(
+    `
+      {
+        allContentfulPerson {
+          nodes {
+            reference
+            name
+          }
+        }
+      }
+    `
+  )
+
+  if (articleResult.errors) {
     reporter.panicOnBuild(
-      `There was an error loading your Contentful posts`,
-      result.errors
+      `There was an error loading your Contentful articles`,
+      articleResult.errors
     )
     return
   }
 
-  const posts = result.data.allContentfulBlogPost.nodes
+  if (personResult.errors) {
+    reporter.panicOnBuild(
+      `There was an error loading all person`,
+      personResult.errors
+    )
+    return
+  }
+
+  const articles = articleResult.data.allContentfulArticle.nodes
+  const people = personResult.data.allContentfulPerson.nodes
 
   // Create blog posts pages
   // But only if there's at least one blog post found in Contentful
   // `context` is available in the template as a prop and as a variable in GraphQL
 
-  if (posts.length > 0) {
-    posts.forEach((post, index) => {
-      const previousPostSlug = index === 0 ? null : posts[index - 1].slug
-      const nextPostSlug =
-        index === posts.length - 1 ? null : posts[index + 1].slug
-
+  if (articles.length > 0) {
+    articles.forEach((item) => {
       createPage({
-        path: `/blog/${post.slug}/`,
-        component: blogPost,
+        path: `/news/${item.slug}/`,
+        component: article,
         context: {
-          slug: post.slug,
-          previousPostSlug,
-          nextPostSlug,
+          slug: item.slug,
+        },
+      })
+    })
+  }
+
+  if (people.length > 0) {
+    people.forEach((item) => {
+      createPage({
+        path: `/people/${item.reference}/`,
+        component: person,
+        context: {
+          reference: item.reference,
         },
       })
     })
   }
 }
+
+exports.onCreateWebpackConfig = helper => {
+  const { stage, actions, getConfig } = helper
+  if (stage === 'develop' || stage === 'build-javascript') {
+    const config = getConfig()
+    const miniCssExtractPlugin = config.plugins.find(
+      plugin => plugin.constructor.name === 'MiniCssExtractPlugin'
+    )
+    if (miniCssExtractPlugin) {
+      miniCssExtractPlugin.options.ignoreOrder = true
+    }
+    actions.replaceWebpackConfig(config)
+  }
+}
+
