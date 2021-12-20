@@ -114,3 +114,12 @@ p {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+.md-content {
+  margin-bottom: 2rem;
+}
+
+.md-content img {
+  max-width: 700px;
+  margin: 2rem 0;
+}

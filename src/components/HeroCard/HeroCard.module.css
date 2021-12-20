@@ -1,11 +1,18 @@
 .hero_card {
+  max-width: 1180px;
   display: flex;
   flex-direction: row;
   border: 1px solid lightgray;
+  margin: 48px auto 16px auto;
 }
 
 .image_container {
   width: 40%;
+}
+
+.title {
+  font-size: var(--text-title);
+  font-weight: var(--extrabold);
 }
 
 .text_container {
@@ -14,10 +21,10 @@
 
 .link {
   display: inline-block;
-  border: 1px solid blue;
+  border: 1px solid #000;
   border-radius: 4px;
-  background-color: blue;
-  color: white;
+  background-color: #000;
+  color: #fff;
   font-weight: 700;
   padding: 0.5rem 0.75rem;
   text-decoration: none;
@@ -25,6 +32,24 @@
 }
 
 .link:hover {
-  background-color: white;
-  color: blue;
+  background-color: #fff;
+  color: #000;
+}
+
+@media screen and (max-width: 1185px) {
+  .hero_card {
+    max-width: 95%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .hero_card {
+    max-width: 100%;
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .image_container, .text_container {
+    width: 100%;
+  }
 }

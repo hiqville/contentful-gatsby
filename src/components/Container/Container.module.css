@@ -1,0 +1,11 @@
+.container {
+  max-width: var(--size-max-width);
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-4xl);
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    padding: var(--space-lg) var(--space-2xl);
+  }
+}

@@ -1,15 +1,12 @@
 import React from 'react'
+import * as styles from './Container.module.css'
 
 const Container = ({ children, as = 'div' }) => {
   const Tag = as
 
   return (
     <Tag
-      style={{
-        maxWidth: 'var(--size-max-width)',
-        margin: '0 auto',
-        padding: 'var(--space-2xl) var(--size-gutter)',
-      }}
+      className={styles.container}
     >
       {children}
     </Tag>

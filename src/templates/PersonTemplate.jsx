@@ -6,7 +6,6 @@ import Hero from '../components/Hero/Hero'
 import * as styles from './PersonTemplate.module.css'
 
 const PeopleTemplate = ({ data, location }) => {
-  console.log('people template', data, location)
   const person = data.contentfulPerson
 
   return (

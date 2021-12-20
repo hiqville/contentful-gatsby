@@ -5,6 +5,7 @@ import CardList from '../../components/CardList/CardList'
 import Card from '../../components/Card/Card'
 import Hero from '../../components/Hero/Hero'
 import Container from '../../components/Container/Container'
+import Separator from '../../components/Separator/Separator'
 
 const People = ({ data, location }) => {
   const pageData = data.contentfulContentPage
@@ -21,10 +22,12 @@ const People = ({ data, location }) => {
       />
       <Container>
       {textContent && <div
+            className="md-content"
             dangerouslySetInnerHTML={{
               __html: textContent,
             }}
       />}
+      <Separator />
       <CardList>
         {cards.map((card) => (
           <li key={card.id}>

@@ -3,9 +3,9 @@ import { graphql } from 'gatsby'
 import Layout from '../components/Layout/Layout'
 import Card from '../components/Card/Card'
 import Hero from '../components/Hero/Hero'
-import * as styles from './Home.module.css'
 import Container from '../components/Container/Container'
 import CardList from '../components/CardList/CardList'
+import Separator from '../components/Separator/Separator'
 
 const Home = ({ data, location }) => {
   const page = data.contentfulContentPage || []
@@ -21,24 +21,26 @@ const Home = ({ data, location }) => {
         />
       )}
       <Container>
-      <div
-        dangerouslySetInnerHTML={{
-          __html: page.plainTextContent.childMarkdownRemark.html,
-        }}
-      />
+        <div
+          className="md-content"
+          dangerouslySetInnerHTML={{
+            __html: page.plainTextContent.childMarkdownRemark.html,
+          }}
+        />
+        <Separator />
         <CardList>
-        {page.cards.map((card) => (
-          <li className={styles.card_container} key={card.id}>
-            <Card
-              image={card.cardImage.image.gatsbyImageData}
-              title={card.header}
-              content={card.text.childMarkdownRemark.html}
-              link={card.cardLink}
-              linkText={card.linkText}
-            />
-          </li>
-        ))}
-      </CardList>
+          {page.cards.map((card) => (
+            <li key={card.id}>
+              <Card
+                image={card.cardImage.image.gatsbyImageData}
+                title={card.header}
+                content={card.text.childMarkdownRemark.html}
+                link={card.cardLink}
+                linkText={card.linkText}
+              />
+            </li>
+          ))}
+        </CardList>
       </Container>
     </Layout>
   )
@@ -47,42 +49,42 @@ const Home = ({ data, location }) => {
 export default Home
 
 export const query = graphql`
-query HomeQuery {
-  contentfulContentPage(contentful_id: {eq: "2LmMNBXWDfOU8jOxkWPEu"}) {
-    id
-    contentful_id
-    header
-    pageHeroImage {
-      heroImageText
-      heroImageHeader
-      heroImage {
-        image {
-          gatsbyImageData
+  query HomeQuery {
+    contentfulContentPage(contentful_id: { eq: "2LmMNBXWDfOU8jOxkWPEu" }) {
+      id
+      contentful_id
+      header
+      pageHeroImage {
+        heroImageText
+        heroImageHeader
+        heroImage {
+          image {
+            gatsbyImageData
+          }
         }
       }
-    }
-    plainTextContent {
-      childMarkdownRemark {
-        html
-      }
-    }
-    cards {
-      id
-      header
-      text {
+      plainTextContent {
         childMarkdownRemark {
           html
         }
       }
-      cardLink
-      linkText
-      cardImage {
-        alternativeText
-        image {
-          gatsbyImageData
+      cards {
+        id
+        header
+        text {
+          childMarkdownRemark {
+            html
+          }
+        }
+        cardLink
+        linkText
+        cardImage {
+          alternativeText
+          image {
+            gatsbyImageData
+          }
         }
       }
     }
   }
-}
 `
