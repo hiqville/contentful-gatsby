@@ -6,9 +6,11 @@ import Hero from '../components/Hero/Hero'
 import Container from '../components/Container/Container'
 import CardList from '../components/CardList/CardList'
 import Separator from '../components/Separator/Separator'
+import RichTextContent from '../components/RichTextContent/RichTextContent'
 
 const Home = ({ data, location }) => {
   const page = data.contentfulContentPage || []
+  const richText = data.contentfulContentPage.richTextContent
   const heroImg = page.pageHeroImage
 
   return (
@@ -41,6 +43,8 @@ const Home = ({ data, location }) => {
             </li>
           ))}
         </CardList>
+        <Separator />
+        <RichTextContent content={richText} />
       </Container>
     </Layout>
   )
@@ -82,6 +86,17 @@ export const query = graphql`
           alternativeText
           image {
             gatsbyImageData
+          }
+        }
+      }
+      richTextContent {
+        raw
+        references {
+          ... on ContentfulAsset {
+            contentful_id
+            __typename
+            gatsbyImageData(width: 700)
+            description
           }
         }
       }
