@@ -6,11 +6,13 @@ import Container from '../../components/Container/Container'
 import CardList from '../../components/CardList/CardList'
 import Card from '../../components/Card/Card'
 import Separator from '../../components/Separator/Separator'
+import RichTextContent from '../../components/RichTextContent/RichTextContent'
 
 const News = ({ data, location }) => {
   const page = data.contentfulContentPage
   const heroCard = page.pageHeroCard
   const textContent = page.plainTextContent?.childMarkdownRemark?.html
+  const richText = data.contentfulContentPage.richTextContent
 
   return (
     <Layout location={location}>
@@ -45,6 +47,8 @@ const News = ({ data, location }) => {
             </li>
           ))}
         </CardList>
+        <Separator />
+        <RichTextContent content={richText} />
       </Container>
     </Layout>
   )
@@ -93,6 +97,17 @@ query NewsQuery {
       childContentfulContentCardTextTextNode {
         childMarkdownRemark {
           html
+        }
+      }
+    }
+    richTextContent {
+      raw
+      references {
+        ... on ContentfulAsset {
+          contentful_id
+          __typename
+          gatsbyImageData(width: 700)
+          description
         }
       }
     }

@@ -6,12 +6,14 @@ import Card from '../../components/Card/Card'
 import Hero from '../../components/Hero/Hero'
 import Container from '../../components/Container/Container'
 import Separator from '../../components/Separator/Separator'
+import RichTextContent from '../../components/RichTextContent/RichTextContent'
 
 const People = ({ data, location }) => {
   const pageData = data.contentfulContentPage
   const pageHero = pageData.pageHeroImage
   const textContent = pageData.plainTextContent?.childMarkdownRemark?.html
   const { cards } = pageData
+  const richText = data.contentfulContentPage.richTextContent
 
   return (
     <Layout location={location}>
@@ -21,26 +23,30 @@ const People = ({ data, location }) => {
         content={pageHero.heroImageText}
       />
       <Container>
-      {textContent && <div
+        {textContent && (
+          <div
             className="md-content"
             dangerouslySetInnerHTML={{
               __html: textContent,
             }}
-      />}
-      <Separator />
-      <CardList>
-        {cards.map((card) => (
-          <li key={card.id}>
-            <Card
-              link={card.cardLink}
-              title={card.header}
-              image={card.cardImage.image.gatsbyImageData}
-              linkText={card.linkText}
-              content={card.text?.childMarkdownRemark?.excerpt}
-            />
-          </li>
-        ))}
-      </CardList>
+          />
+        )}
+        <Separator />
+        <CardList>
+          {cards.map((card) => (
+            <li key={card.id}>
+              <Card
+                link={card.cardLink}
+                title={card.header}
+                image={card.cardImage.image.gatsbyImageData}
+                linkText={card.linkText}
+                content={card.text?.childMarkdownRemark?.excerpt}
+              />
+            </li>
+          ))}
+        </CardList>
+        <Separator />
+        <RichTextContent content={richText} />
       </Container>
     </Layout>
   )
@@ -50,7 +56,7 @@ export default People
 
 export const query = graphql`
   query PeopleQuery {
-    contentfulContentPage(contentful_id: {eq: "3MRmRBR2YPGUl0CL1lVOHC"}) {
+    contentfulContentPage(contentful_id: { eq: "3MRmRBR2YPGUl0CL1lVOHC" }) {
       contentful_id
       title
       header
@@ -67,8 +73,8 @@ export const query = graphql`
             html
           }
         }
-        cardLink,
-        linkText,
+        cardLink
+        linkText
         cardImage {
           alternativeText
           image {
@@ -83,6 +89,17 @@ export const query = graphql`
           alternativeText
           image {
             gatsbyImageData
+          }
+        }
+      }
+      richTextContent {
+        raw
+        references {
+          ... on ContentfulAsset {
+            contentful_id
+            __typename
+            gatsbyImageData(width: 700)
+            description
           }
         }
       }
